@@ -68,6 +68,7 @@ body {
   font: inherit;
   color: white;
   cursor: pointer;
+  border-radius: 8px;
 }
 
 #read-later button:hover,
