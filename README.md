@@ -104,16 +104,6 @@ To set up the Django blog website locally, follow these steps:
 - `requirements.txt`: Lists Python dependencies.
 - `README.md`: This file, providing project documentation.
 
-## Contributing
-Contributions are welcome to enhance the blog’s features or design. To contribute:
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature`).
-3. Make changes and commit (`git commit -m "Add your feature"`).
-4. Push to your branch (`git push origin feature/your-feature`).
-5. Create a pull request.
-
-Please follow Django’s coding style guidelines and include tests for new features.
-
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
