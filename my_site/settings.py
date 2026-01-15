@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import warnings
+import psycopg2
 
 load_dotenv()
 
@@ -85,18 +87,44 @@ WSGI_APPLICATION = 'my_site.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DATABASE_NAME', 'postgres'),
+        'USER': os.getenv('DATABASE_USER', 'postgres'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),  # e.g., db.xyz.supabase.co
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
+    },
+    'backup': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': getenv('DB_NAME'),
-    #     'USER': getenv('DB_USER'),
-    #     'PASSWORD': getenv('DB_PASSWORD'),
-    #     'HOST': getenv('DB_HOST'),
-    #     'PORT': getenv('DB_PORT', '5432'),
-    # }
 }
+
+
+# Check if PostgreSQL is available
+def check_postgres_connection():
+    """Check if PostgreSQL database is available."""
+    db_config = DATABASES['default']
+    if db_config['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
+        try:
+            conn = psycopg2.connect(
+                dbname=db_config['NAME'],
+                user=db_config['USER'],
+                password=db_config['PASSWORD'],
+                host=db_config['HOST'],
+                port=db_config['PORT']
+            )
+            conn.close()
+        except (psycopg2.OperationalError, TypeError) as e:
+            warnings.warn(
+                f"PostgreSQL database not found or connection failed: {e}. "
+                "Falling back to SQLite backup database.",
+                RuntimeWarning,
+                stacklevel=2
+            )
+
+
+check_postgres_connection()
 
 
 # Password validation
