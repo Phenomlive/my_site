@@ -1,6 +1,22 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from .models import Post, Author, Comment, Tag
+from io import BytesIO
+from PIL import Image
+from django.core.files.uploadedfile import SimpleUploadedFile
+
+
+def create_test_image():
+    """Create a test image file."""
+    file = BytesIO()
+    image = Image.new('RGB', (100, 100), color='red')
+    image.save(file, 'jpeg')
+    file.seek(0)
+    return SimpleUploadedFile(
+        "test_image.jpg",
+        file.getvalue(),
+        content_type="image/jpeg"
+    )
 
 
 class StartingPageViewTest(TestCase):
@@ -21,7 +37,8 @@ class StartingPageViewTest(TestCase):
                 excerpt=f'Excerpt {i}',
                 slug=f'post-{i}',
                 content=f'Content for post {i} with minimum length',
-                author=self.author
+                author=self.author,
+                image=create_test_image()
             )
     
     def test_starting_page_loads(self):
@@ -60,7 +77,8 @@ class PostsViewTest(TestCase):
                 title=f'Post {i}',
                 excerpt=f'Excerpt {i}',
                 slug=f'post-{i}',
-                content=f'Content for post {i} with minimum length',
+                content=f'Content ,
+                image=create_test_image()for post {i} with minimum length',
                 author=self.author
             )
     
@@ -97,7 +115,8 @@ class PostDetailViewTest(TestCase):
         self.post = Post.objects.create(
             title='Test Post',
             excerpt='Test excerpt',
-            slug='test-post',
+            slug='test-post',,
+            image=create_test_image()
             content='This is test content with minimum length',
             author=self.author
         )
@@ -173,14 +192,16 @@ class ReadLaterViewTest(TestCase):
         self.post1 = Post.objects.create(
             title='Post 1',
             excerpt='Excerpt 1',
-            slug='post-1',
-            content='Content 1 with minimum length',
-            author=self.author
+            slug='post-1',,
+            image=create_test_image()
         )
         self.post2 = Post.objects.create(
             title='Post 2',
             excerpt='Excerpt 2',
             slug='post-2',
+            content='Content 2 with minimum length',
+            author=self.author,
+            image=create_test_image()
             content='Content 2 with minimum length',
             author=self.author
         )
