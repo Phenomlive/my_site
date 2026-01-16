@@ -77,9 +77,9 @@ class PostsViewTest(TestCase):
                 title=f'Post {i}',
                 excerpt=f'Excerpt {i}',
                 slug=f'post-{i}',
-                content=f'Content ,
-                image=create_test_image()for post {i} with minimum length',
-                author=self.author
+                content=f'Content for post {i} with minimum length',
+                author=self.author,
+                image=create_test_image()
             )
     
     def test_posts_page_loads(self):
@@ -115,10 +115,10 @@ class PostDetailViewTest(TestCase):
         self.post = Post.objects.create(
             title='Test Post',
             excerpt='Test excerpt',
-            slug='test-post',,
-            image=create_test_image()
+            slug='test-post',
             content='This is test content with minimum length',
-            author=self.author
+            author=self.author,
+            image=create_test_image()
         )
         self.tag = Tag.objects.create(caption='Django')
         self.post.tags.add(self.tag)
@@ -192,7 +192,9 @@ class ReadLaterViewTest(TestCase):
         self.post1 = Post.objects.create(
             title='Post 1',
             excerpt='Excerpt 1',
-            slug='post-1',,
+            slug='post-1',
+            content='Content 1 with minimum length',
+            author=self.author,
             image=create_test_image()
         )
         self.post2 = Post.objects.create(
@@ -202,8 +204,6 @@ class ReadLaterViewTest(TestCase):
             content='Content 2 with minimum length',
             author=self.author,
             image=create_test_image()
-            content='Content 2 with minimum length',
-            author=self.author
         )
     
     def test_read_later_get_shows_empty_when_no_posts(self):
