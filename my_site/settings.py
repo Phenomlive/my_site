@@ -30,9 +30,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('IS_DEVELOPMENT', True)
 
-ALLOWED_HOSTS = [
-    os.getenv('APP_HOST', 'localhost')
-]
+# Parse comma-separated hosts from APP_HOST environment variable
+_APP_HOST = os.getenv('APP_HOST', 'localhost,127.0.0.1')
+ALLOWED_HOSTS = [host.strip() for host in _APP_HOST.split(',')]
 
 
 # Application definition
