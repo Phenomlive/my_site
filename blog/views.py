@@ -26,6 +26,7 @@ class PostsView(ListView):
     model = Post
     context_object_name = 'posts'
     ordering = ['-date']
+    paginate_by = 10  # Add pagination: 10 posts per page
 
 class PostDetailView(View):
 

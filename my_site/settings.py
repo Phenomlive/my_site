@@ -101,31 +101,6 @@ DATABASES = {
 }
 
 
-# Check if PostgreSQL is available
-def check_postgres_connection():
-    """Check if PostgreSQL database is available."""
-    db_config = DATABASES['default']
-    if db_config['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
-        try:
-            conn = psycopg2.connect(
-                dbname=db_config['NAME'],
-                user=db_config['USER'],
-                password=db_config['PASSWORD'],
-                host=db_config['HOST'],
-                port=db_config['PORT']
-            )
-            conn.close()
-        except (psycopg2.OperationalError, TypeError) as e:
-            warnings.warn(
-                f"PostgreSQL database not found or connection failed: {e}. "
-                "Falling back to SQLite backup database.",
-                RuntimeWarning,
-                stacklevel=2
-            )
-
-
-check_postgres_connection()
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
