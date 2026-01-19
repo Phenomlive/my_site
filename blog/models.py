@@ -4,6 +4,7 @@ from django.core.validators import MinLengthValidator
 # Create your models here.
 
 class Comment(models.Model):
+    id = models.AutoField(primary_key=True)
     user_name = models.CharField(max_length=130)
     user_mail = models.EmailField()
     text = models.TextField(max_length=400)
